@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Charger le statut d'authentification
-  if (auth.isLoggedIn()) {
+  if (auth.isAuthenticated()) {
     window.location.href = 'account.html';
   }
 });
