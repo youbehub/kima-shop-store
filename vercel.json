@@ -1,0 +1,10 @@
+{
+  "buildCommand": "echo 'Build complete'",
+  "outputDirectory": "frontend",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/backend/server.js"
+    }
+  ]
+}
