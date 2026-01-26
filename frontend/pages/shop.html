@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutique - Fashion Luxe</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-brand">
+        <h1>KIMA SHOP</h1>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="shop.html" class="active">Boutique</a></li>
+        <li><a href="cart.html" class="cart-link">
+          <span>🛍️</span>
+          <span class="cart-count">0</span>
+        </a></li>
+        <li><a href="account.html">Mon Compte</a></li>
+        <li id="admin-link" style="display:none;"><a href="admin.html">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" style="margin-top: 2rem;">
+    <h2>Nos Collections</h2>
+
+    <!-- Filtres -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 2rem 0;">
+      <div class="form-group">
+        <label>Catégorie</label>
+        <select id="category-filter">
+          <option value="">Toutes les catégories</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Recherche</label>
+        <input type="text" id="search-filter" placeholder="Rechercher...">
+      </div>
+      <div class="form-group">
+        <label>Prix min</label>
+        <input type="number" id="price-min" placeholder="0" min="0">
+      </div>
+      <div class="form-group">
+        <label>Prix max</label>
+        <input type="number" id="price-max" placeholder="500" min="0">
+      </div>
+      <div class="form-group">
+        <label>Tri</label>
+        <select id="sort-filter">
+          <option value="">Plus récents</option>
+          <option value="price_asc">Prix croissant</option>
+          <option value="price_desc">Prix décroissant</option>
+        </select>
+      </div>
+      <div style="display: flex; align-items: flex-end;">
+        <button class="btn btn-gold" onclick="applyFilters()">Appliquer</button>
+      </div>
+    </div>
+
+    <!-- Grille de produits -->
+    <div id="products-container" class="product-grid">
+      <!-- Chargé par JS -->
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Fashion Luxe. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/pages/shop.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détails Produit - Fashion Luxe</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .product-details { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2rem; }
+    .gallery { display: flex; flex-direction: column; gap: 1rem; }
+    .main-image { width: 100%; height: 500px; border-radius: 15px; overflow: hidden; background: #f5f5f5; }
+    .main-image img { width: 100%; height: 100%; object-fit: cover; }
+    .thumbnails { display: flex; gap: 1rem; }
+    .thumbnail { width: 80px; height: 80px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; overflow: hidden; }
+    .thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+    .thumbnail.active { border-color: #C8A24A; }
+    .variants { margin: 2rem 0; }
+    .variant-group { margin-bottom: 1.5rem; }
+    .variant-options { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .variant-btn { padding: 0.5rem 1rem; border: 2px solid #ddd; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+    .variant-btn.active { border-color: #C8A24A; background: #C8A24A; color: white; }
+    .quantity-selector { display: flex; align-items: center; gap: 1rem; margin: 2rem 0; }
+    .quantity-selector input { width: 70px; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-brand">
+        <h1>KIMA SHOP</h1>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="shop.html">Boutique</a></li>
+        <li><a href="cart.html" class="cart-link">
+          <span>🛍️</span>
+          <span class="cart-count">0</span>
+        </a></li>
+        <li><a href="account.html">Mon Compte</a></li>
+        <li id="admin-link" style="display:none;"><a href="admin.html">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" style="margin-top: 2rem; margin-bottom: 3rem;">
+    <a href="shop.html" style="color: #C8A24A; text-decoration: none; margin-bottom: 1rem;">&larr; Retour à la boutique</a>
+
+    <div class="product-details">
+      <!-- Galerie d'images -->
+      <div class="gallery">
+        <div class="main-image">
+          <img id="mainImage" src="" alt="">
+        </div>
+        <div class="thumbnails" id="thumbnails"></div>
+      </div>
+
+      <!-- Détails -->
+      <div>
+        <p id="category" style="color: #C8A24A; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;"></p>
+        <h1 id="title" style="font-size: 2rem; margin-bottom: 1rem;"></h1>
+        <p id="price" style="font-size: 1.8rem; color: #C8A24A; font-weight: bold; margin-bottom: 1.5rem;"></p>
+
+        <p id="description" style="line-height: 1.8; margin-bottom: 2rem; color: #666;"></p>
+
+        <!-- Variantes -->
+        <div class="variants">
+          <div class="variant-group" id="sizes-group" style="display:none;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Taille</label>
+            <div class="variant-options" id="sizes"></div>
+          </div>
+
+          <div class="variant-group" id="colors-group" style="display:none;">
+            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Couleur</label>
+            <div class="variant-options" id="colors"></div>
+          </div>
+        </div>
+
+        <!-- Quantité -->
+        <div class="quantity-selector">
+          <label style="font-weight: 600;">Quantité</label>
+          <input type="number" id="quantity" value="1" min="1" max="10">
+        </div>
+
+        <button class="btn btn-gold" style="width: 100%; padding: 1rem;" onclick="addProductToCart()">
+          Ajouter au panier
+        </button>
+
+        <div style="margin-top: 2rem; padding: 1.5rem; background: #f9f9f9; border-radius: 10px;">
+          <h4 style="margin-bottom: 1rem;">Infos supplémentaires</h4>
+          <ul style="list-style: none;">
+            <li style="padding: 0.5rem 0;"><strong>Livraison gratuite</strong> à partir de 50€</li>
+            <li style="padding: 0.5rem 0;"><strong>Retours gratuits</strong> sous 30 jours</li>
+            <li style="padding: 0.5rem 0;"><strong>Paiement sécurisé</strong> 100% SSL</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Fashion Luxe. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/pages/product.js"></script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kima Shop - Boutique Vêtements Femme</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-brand">
+        <h1>KIMA SHOP</h1>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="active">Accueil</a></li>
+        <li><a href="pages/shop.html">Boutique</a></li>
+        <li><a href="pages/cart.html" class="cart-link">
+          <span>🛍️</span>
+          <span class="cart-count">0</span>
+        </a></li>
+        <li><a href="pages/account.html">Mon Compte</a></li>
+        <li id="admin-link" style="display:none;"><a href="pages/admin.html">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Élégance & Luxe</h2>
+      <p>Découvrez notre collection exclusive de vêtements pour femmes</p>
+      <a href="pages/shop.html" class="btn btn-gold">Explorer</a>
+    </div>
+  </section>
+
+  <section class="featured">
+    <div class="container">
+      <h2>Nos Pépites</h2>
+      <div id="featured-products" class="product-grid">
+        <!-- Chargé par JS -->
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Kima Shop. Tous droits réservés.</p>
+      <div class="footer-links">
+        <a href="#">Mentions Légales</a>
+        <a href="#">Politique de Confidentialité</a>
+        <a href="#">Conditions Générales</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script src="js/pages/home.js"></script>
+</body>
+</html>

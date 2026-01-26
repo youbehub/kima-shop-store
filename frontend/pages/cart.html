@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panier - Fashion Luxe</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-brand">
+        <h1>KIMA SHOP</h1>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="shop.html">Boutique</a></li>
+        <li><a href="cart.html" class="cart-link active">
+          <span>🛍️</span>
+          <span class="cart-count">0</span>
+        </a></li>
+        <li><a href="account.html">Mon Compte</a></li>
+        <li id="admin-link" style="display:none;"><a href="admin.html">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" style="margin-top: 2rem; margin-bottom: 3rem;">
+    <h2>Mon Panier</h2>
+
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-top: 2rem;">
+      <!-- Articles du panier -->
+      <div>
+        <div id="cart-items">
+          <p style="text-align: center; padding: 2rem;">Votre panier est vide</p>
+        </div>
+      </div>
+
+      <!-- Résumé -->
+      <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); height: fit-content;">
+        <h3 style="margin-bottom: 1.5rem;">Résumé</h3>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 2px solid #eee; padding-bottom: 1rem;">
+          <span>Sous-total</span>
+          <span id="subtotal">0,00 €</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 2px solid #eee; padding-bottom: 1rem;">
+          <span>Frais de port</span>
+          <span id="shipping">9,99 €</span>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; font-size: 1.3rem; font-weight: bold;">
+          <span>Total</span>
+          <span id="total">0,00 €</span>
+        </div>
+
+        <button class="btn btn-gold" style="width: 100%;" onclick="window.location.href='checkout.html'">
+          Procéder au paiement
+        </button>
+        <button class="btn btn-outline" style="width: 100%; margin-top: 1rem;" onclick="window.location.href='shop.html'">
+          Continuer les achats
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Fashion Luxe. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/pages/cart.js"></script>
+</body>
+</html>

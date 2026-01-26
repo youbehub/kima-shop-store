@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion / Inscription - Fashion Luxe</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #F9F7F3 0%, #fff5f0 100%);
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1rem;
+    }
+
+    .auth-container {
+      max-width: 450px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(200, 162, 74, 0.08);
+      animation: slideIn 0.5s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .auth-header h2 {
+      color: #333;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      font-family: Georgia, serif;
+    }
+
+    .auth-header p {
+      color: #999;
+      font-size: 0.95rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #e8e8e8;
+      background: #f9f7f3;
+      border-radius: 10px;
+      padding: 5px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      color: #999;
+      border-bottom: none;
+      transition: all 0.3s;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .tab-btn:hover {
+      color: #C8A24A;
+      background: rgba(200, 162, 74, 0.05);
+    }
+
+    .tab-btn.active {
+      color: white;
+      background: #C8A24A;
+      box-shadow: 0 4px 12px rgba(200, 162, 74, 0.3);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .form-group {
+      margin-bottom: 1.3rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #333;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 2px solid #e8e8e8;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #C8A24A;
+      box-shadow: 0 0 0 3px rgba(200, 162, 74, 0.1);
+    }
+
+    .form-group input.error {
+      border-color: #e74c3c;
+      background: #fff5f5;
+    }
+
+    .form-group .error-message {
+      color: #e74c3c;
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+      display: none;
+    }
+
+    .form-group .error-message.show {
+      display: block;
+    }
+
+    .password-toggle {
+      position: relative;
+    }
+
+    .password-toggle button {
+      position: absolute;
+      right: 12px;
+      top: 38px;
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      padding: 0.3rem;
+      font-size: 1.2rem;
+    }
+
+    .password-toggle button:hover {
+      color: #C8A24A;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: #C8A24A;
+    }
+
+    .checkbox-group label {
+      margin-bottom: 0;
+      font-weight: 400;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #C8A24A 0%, #b8922a 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(200, 162, 74, 0.3);
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(200, 162, 74, 0.4);
+    }
+
+    .btn-gold:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .forgot-password {
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .forgot-password a {
+      color: #C8A24A;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .forgot-password a:hover {
+      text-decoration: underline;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 1.5rem 0;
+      color: #999;
+      position: relative;
+    }
+
+    .divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: #e8e8e8;
+    }
+
+    .divider span {
+      background: white;
+      padding: 0 1rem;
+      position: relative;
+      font-size: 0.85rem;
+    }
+
+    .success-message {
+      background: #d4edda;
+      color: #155724;
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      display: none;
+      border-left: 4px solid #28a745;
+    }
+
+    .success-message.show {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .password-strength {
+      margin-top: 0.5rem;
+      height: 4px;
+      background: #e8e8e8;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .password-strength-bar {
+      height: 100%;
+      width: 0;
+      transition: all 0.3s;
+    }
+
+    .password-strength.weak .password-strength-bar {
+      width: 33%;
+      background: #e74c3c;
+    }
+
+    .password-strength.medium .password-strength-bar {
+      width: 66%;
+      background: #f39c12;
+    }
+
+    .password-strength.strong .password-strength-bar {
+      width: 100%;
+      background: #27ae60;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+      margin: 0 3px;
+      animation: pulse 1.5s infinite;
+    }
+
+    .loading:nth-child(2) { animation-delay: 0.2s; }
+    .loading:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-page">
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-brand">
+          <h1>KIMA SHOP</h1>
+        </div>
+        <ul class="nav-menu">
+          <li><a href="../index.html">Accueil</a></li>
+          <li><a href="shop.html">Boutique</a></li>
+          <li><a href="cart.html" class="cart-link">
+            <span>🛍️</span>
+            <span class="cart-count">0</span>
+          </a></li>
+          <li><a href="account.html">Mon Compte</a></li>
+          <li id="admin-link" style="display:none;"><a href="admin.html">Admin</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="auth-container">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('login')">🔐 Connexion</button>
+        <button class="tab-btn" onclick="switchTab('register')">✏️ Inscription</button>
+      </div>
+
+      <!-- Connexion -->
+      <div id="login" class="tab-content active">
+        <div class="auth-header">
+          <h2>Bienvenue</h2>
+          <p>Connectez-vous à votre compte</p>
+        </div>
+
+        <div class="success-message" id="login-success"></div>
+
+        <form id="login-form" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label>📧 Email *</label>
+            <input type="email" name="email" required placeholder="your@email.com">
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group password-toggle">
+            <label>🔑 Mot de passe *</label>
+            <input type="password" name="password" required placeholder="••••••••">
+            <button type="button" onclick="togglePassword(this)">👁️</button>
+            <div class="error-message"></div>
+          </div>
+
+          <div class="checkbox-group">
+            <input type="checkbox" id="remember" name="remember">
+            <label for="remember">Se souvenir de moi</label>
+          </div>
+
+          <button type="submit" class="btn btn-gold" id="login-btn">Se connecter</button>
+
+          <div class="forgot-password">
+            <a href="#" onclick="showForgotPassword(event)">Mot de passe oublié ?</a>
+          </div>
+        </form>
+      </div>
+
+      <!-- Inscription -->
+      <div id="register" class="tab-content">
+        <div class="auth-header">
+          <h2>Créer un compte</h2>
+          <p>Rejoignez notre communauté</p>
+        </div>
+
+        <div class="success-message" id="register-success"></div>
+
+        <form id="register-form" onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label>👤 Nom complet *</label>
+            <input type="text" name="name" required placeholder="Jean Dupont" minlength="2">
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group">
+            <label>📧 Email *</label>
+            <input type="email" name="email" required placeholder="your@email.com">
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group password-toggle">
+            <label>🔑 Mot de passe *</label>
+            <input type="password" name="password" required placeholder="••••••••" minlength="6" oninput="checkPasswordStrength(this)">
+            <button type="button" onclick="togglePassword(this)">👁️</button>
+            <div class="password-strength">
+              <div class="password-strength-bar"></div>
+            </div>
+            <div class="error-message"></div>
+          </div>
+
+          <div class="form-group password-toggle">
+            <label>✓ Confirmer mot de passe *</label>
+            <input type="password" name="password_confirm" required placeholder="••••••••" minlength="6">
+            <button type="button" onclick="togglePassword(this)">👁️</button>
+            <div class="error-message"></div>
+          </div>
+
+          <button type="submit" class="btn btn-gold" id="register-btn">S'inscrire</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Fashion Luxe. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <!-- Modal Mot de passe oublié -->
+  <div id="forgot-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:white; padding:2rem; border-radius:15px; max-width:400px; width:90%;">
+      <h3 style="color:#333; margin-bottom:1rem;">Réinitialiser le mot de passe</h3>
+      <form onsubmit="handleForgotPassword(event)">
+        <div class="form-group">
+          <label>Email associé au compte *</label>
+          <input type="email" name="forgot-email" required placeholder="your@email.com">
+          <div class="error-message"></div>
+        </div>
+        <button type="submit" class="btn btn-gold" style="margin-bottom:0.5rem;">Envoyer le lien</button>
+        <button type="button" class="btn" style="background:#e8e8e8; color:#333;" onclick="closeForgotPassword()">Annuler</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/pages/auth.js"></script>
+</body>
+</html>

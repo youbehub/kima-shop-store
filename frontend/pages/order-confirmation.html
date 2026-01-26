@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirmation de Commande - Fashion Luxe</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-brand">
+        <h1>KIMA SHOP</h1>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="shop.html">Boutique</a></li>
+        <li><a href="cart.html" class="cart-link">
+          <span>🛍️</span>
+          <span class="cart-count">0</span>
+        </a></li>
+        <li><a href="account.html">Mon Compte</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container" style="margin-top: 3rem; margin-bottom: 3rem; max-width: 600px;">
+    <div style="text-align: center; background: #d4edda; padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+      <h2 style="color: #155724; margin-bottom: 0.5rem;">✓ Commande Confirmée</h2>
+      <p style="color: #155724; margin-bottom: 1rem;">Merci pour votre achat!</p>
+      <p id="order-number" style="font-size: 1.2rem; font-weight: bold; color: #155724;"></p>
+    </div>
+
+    <div style="background: white; padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+      <h3>Détails de la Commande</h3>
+      <div id="order-details" style="margin-top: 1rem;">
+        <!-- Chargé par JS -->
+      </div>
+    </div>
+
+    <div style="text-align: center;">
+      <p style="margin-bottom: 1rem; color: #666;">Un email de confirmation a été envoyé à votre adresse.</p>
+      <a href="../index.html" class="btn btn-gold">Retour à l'Accueil</a>
+      <a href="shop.html" class="btn btn-outline" style="margin-left: 1rem;">Continuer les Achats</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Fashion Luxe. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="../js/app.js"></script>
+  <script>
+    async function loadOrderConfirmation() {
+      const params = new URLSearchParams(window.location.search);
+      const orderNumber = params.get('order');
+
+      if (!orderNumber) {
+        window.location.href = '../index.html';
+        return;
+      }
+
+      try {
+        const order = await apiCall(`/orders/${orderNumber}`);
+
+        document.getElementById('order-number').textContent = `Numéro: ${order.order_number}`;
+
+        const details = document.getElementById('order-details');
+        details.innerHTML = `
+          <div style="display: grid; gap: 1rem;">
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding: 0.5rem 0;">
+              <span>Adresse de livraison:</span>
+              <div style="text-align: right;">
+                ${order.customer_name}<br>
+                ${order.address}<br>
+                ${order.postal_code} ${order.city}<br>
+                ${order.country}
+              </div>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding: 0.5rem 0;">
+              <span>Email:</span>
+              <span>${order.customer_email}</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding: 0.5rem 0;">
+              <span>Téléphone:</span>
+              <span>${order.phone}</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; font-weight: bold; padding: 0.5rem 0; font-size: 1.1rem;">
+              <span>Total:</span>
+              <span>${formatPrice(order.total)}</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; padding: 0.5rem 0;">
+              <span>Statut:</span>
+              <span style="display: inline-block; padding: 0.25rem 0.75rem; background: #fff3cd; border-radius: 20px;">
+                ${order.status}
+              </span>
+            </div>
+          </div>
+        `;
+      } catch (error) {
+        console.error('Erreur:', error);
+        showToast('Erreur lors du chargement de la commande', 'error');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadOrderConfirmation);
+  </script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de Bord Admin - Kima Shop</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .admin-container { display: grid; grid-template-columns: 250px 1fr; gap: 2rem; margin-top: 2rem; }
+    .admin-sidebar { background: white; padding: 1.5rem; border-radius: 10px; height: fit-content; }
+    .admin-menu { list-style: none; }
+    .admin-menu li { margin-bottom: 0.5rem; }
+    .admin-menu a { display: block; padding: 0.75rem 1rem; border-radius: 8px; text-decoration: none; color: #333; transition: all 0.3s; border-left: 3px solid transparent; }
+    .admin-menu a:hover, .admin-menu a.active { background: #f5f5f5; color: #C8A24A; border-left-color: #C8A24A; }
+    .admin-content { background: white; padding: 2rem; border-radius: 10px; }
+    .section { display: none; }
+    .section.active { display: block; }
+    .table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    .table th { background: #f5f5f5; padding: 1rem; text-align: left; font-weight: 600; border-bottom: 2px solid #ddd; }
+    .table td { padding: 1rem; border-bottom: 1px solid #eee; }
+    .table tr:hover { background: #f9f9f9; }
+    .status-pending { background: #fff3cd; color: #856404; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; }
+    .status-confirmed { background: #d1ecf1; color: #0c5460; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; }
+    .status-shipped { background: #d4edda; color: #155724; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; }
+    .status-delivered { background: #d4edda; color: #155724; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-brand">
+        <h1>KIMA SHOP</h1>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="../index.html">Boutique</a></li>
+        <li><a href="account.html">Mon Compte</a></li>
+        <li><button onclick="adminLogout()" class="btn btn-outline" style="border: none; color: #e74c3c; cursor: pointer;">Déconnexion Admin</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="admin-container">
+      <!-- Sidebar -->
+      <div class="admin-sidebar">
+        <h3 style="margin-bottom: 1rem;">Admin Menu</h3>
+        <ul class="admin-menu">
+          <li><a href="#" onclick="switchSection('dashboard')" class="admin-link active">Dashboard</a></li>
+          <li><a href="#" onclick="switchSection('orders')" class="admin-link">Commandes</a></li>
+          <li><a href="#" onclick="switchSection('products')" class="admin-link">Produits</a></li>
+          <li><a href="#" onclick="switchSection('categories')" class="admin-link">Catégories</a></li>
+        </ul>
+      </div>
+
+      <!-- Contenu -->
+      <div class="admin-content">
+        <!-- Dashboard -->
+        <div id="dashboard" class="section active">
+          <h2>Dashboard</h2>
+          <p style="margin-top: 2rem; color: #999;">Bienvenue dans le tableau de bord administrateur.</p>
+        </div>
+
+        <!-- Commandes -->
+        <div id="orders" class="section">
+          <h2>Gestion des Commandes</h2>
+          <div style="margin-top: 1rem;">
+            <input type="search" id="order-search" placeholder="Rechercher une commande..." style="max-width: 300px;">
+          </div>
+          <table class="table" id="orders-table">
+            <thead>
+              <tr>
+                <th>Numéro</th>
+                <th>Client</th>
+                <th>Total</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody">
+              <!-- Chargé par JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Produits -->
+        <div id="products" class="section">
+          <h2>Gestion des Produits</h2>
+          <button class="btn btn-gold" onclick="showAddProductForm()" style="margin: 1rem 0;">+ Ajouter un Produit</button>
+          
+          <table class="table" id="products-table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Titre</th>
+                <th>Catégorie</th>
+                <th>Prix</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="products-tbody">
+              <!-- Chargé par JS -->
+            </tbody>
+          </table>
+
+          <!-- Modal Ajouter/Modifier un produit -->
+          <div id="add-product-form" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center;">
+            <div style="background:white; padding:2rem; border-radius:15px; max-width:500px; width:90%; max-height:90vh; overflow-y:auto;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                <h3 id="form-title">Ajouter un Produit</h3>
+                <span onclick="closeAddProductForm()" style="cursor:pointer; font-size:1.5rem;">&times;</span>
+              </div>
+              <form onsubmit="submitAddProduct(event)" enctype="multipart/form-data">
+                <div class="form-group">
+                  <label>Titre *</label>
+                  <input type="text" name="title" required placeholder="Nom du produit">
+                </div>
+                <div class="form-group">
+                  <label>Description</label>
+                  <textarea name="description" placeholder="Description du produit" style="min-height:100px;"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Prix (€) *</label>
+                  <input type="number" name="price" step="0.01" required placeholder="ex: 49.99">
+                </div>
+                <div class="form-group">
+                  <label>Catégorie *</label>
+                  <select name="category_id" id="product-category-select" required></select>
+                </div>
+                <div class="form-group">
+                  <label>Image du produit</label>
+                  <input type="file" name="image" accept="image/*" style="padding:0.5rem; border:1px solid #ddd; border-radius:5px; width:100%;">
+                </div>
+                <div class="form-group">
+                  <label style="display:flex; align-items:center; gap:0.5rem;">
+                    <input type="checkbox" name="featured"> Produit vedette
+                  </label>
+                </div>
+                <button type="submit" class="btn btn-gold" style="width:100%; margin-top:1rem;">Créer le Produit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Catégories -->
+        <div id="categories" class="section">
+          <h2>Gestion des Catégories</h2>
+          <button class="btn btn-gold" onclick="showAddCategoryForm()" style="margin: 1rem 0;">+ Ajouter une Catégorie</button>
+          
+          <table class="table" id="categories-table">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Slug</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="categories-tbody">
+              <!-- Chargé par JS -->
+            </tbody>
+          </table>
+
+          <div id="add-category-form" class="modal">
+            <div class="modal-content">
+              <span class="modal-close" onclick="closeAddCategoryForm()">&times;</span>
+              <h3>Ajouter une Catégorie</h3>
+              <form onsubmit="submitAddCategory(event)" style="margin-top: 1rem;">
+                <div class="form-group">
+                  <label>Nom</label>
+                  <input type="text" name="name" required>
+                </div>
+                <div class="form-group">
+                  <label>Slug</label>
+                  <input type="text" name="slug" required>
+                </div>
+                <button type="submit" class="btn btn-gold" style="width: 100%;">Ajouter</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Kima Shop. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/pages/admin.js"></script>
+</body>
+</html>
