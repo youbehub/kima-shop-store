@@ -6,12 +6,6 @@ const path = require('path');
 require('dotenv').config();
 
 const db = require('./src/models/database');
-const authRoutes = require('./src/routes/auth');
-const productRoutes = require('./src/routes/products');
-const categoryRoutes = require('./src/routes/categories');
-const cartRoutes = require('./src/routes/cart');
-const orderRoutes = require('./src/routes/orders');
-const adminRoutes = require('./src/routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,8 +19,8 @@ app.use(cors({
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limite 100 requêtes par windowMs
+  windowMs: 15 * 60 * 1000,
+  max: 100
 });
 app.use(limiter);
 
@@ -34,53 +28,60 @@ app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir les fichiers statiques (uploads)
+// Servir les fichiers statiques
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes API
-app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/categories', categoryRoutes);
-app.use('/api/cart', cartRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/admin', adminRoutes);
-
-// Route de santé
+// Route de santé (avant les autres routes)
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Middleware d'erreur 404
-app.use((req, res) => {
-  res.status(404).json({ error: 'Route non trouvée' });
-});
-
-// Middleware d'erreur global
-app.use((error, req, res, next) => {
-  console.error('Erreur:', error);
-  res.status(error.status || 500).json({
-    error: process.env.NODE_ENV === 'production' 
-      ? 'Erreur serveur' 
-      : error.message
-  });
-});
-
-// Initialiser et démarrer le serveur
-async function startServer() {
+// Charger les routes après l'initialisation
+(async () => {
   try {
+    // Ouvrir la base de données
     await db.open();
     console.log('✅ Base de données connectée');
-    
-    const server = app.listen(PORT, '0.0.0.0', () => {
-      console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
-      console.log('En attente des requêtes...');
+
+    // Charger les routes
+    const authRoutes = require('./src/routes/auth');
+    const productRoutes = require('./src/routes/products');
+    const categoryRoutes = require('./src/routes/categories');
+    const cartRoutes = require('./src/routes/cart');
+    const orderRoutes = require('./src/routes/orders');
+    const adminRoutes = require('./src/routes/admin');
+
+    app.use('/api/auth', authRoutes);
+    app.use('/api/products', productRoutes);
+    app.use('/api/categories', categoryRoutes);
+    app.use('/api/cart', cartRoutes);
+    app.use('/api/orders', orderRoutes);
+    app.use('/api/admin', adminRoutes);
+
+    // 404
+    app.use((req, res) => {
+      res.status(404).json({ error: 'Route non trouvée' });
     });
+
+    // Middleware d'erreur global
+    app.use((error, req, res, next) => {
+      console.error('Erreur:', error);
+      res.status(error.status || 500).json({
+        error: process.env.NODE_ENV === 'production' 
+          ? 'Erreur serveur' 
+          : error.message
+      });
+    });
+
+    // Démarrer le serveur
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
+    });
+
   } catch (error) {
-    console.error('❌ Erreur au démarrage du serveur:', error);
+    console.error('❌ Erreur:', error);
     process.exit(1);
   }
-}
-
-startServer();
+})();
 
 module.exports = app;
