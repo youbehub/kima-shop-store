@@ -71,21 +71,15 @@ async function startServer() {
     await db.open();
     console.log('✅ Base de données connectée');
     
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
+      console.log('En attente des requêtes...');
     });
   } catch (error) {
     console.error('❌ Erreur au démarrage du serveur:', error);
     process.exit(1);
   }
 }
-
-// Gérer l'arrêt gracieux
-process.on('SIGINT', async () => {
-  console.log('\n⏹️  Arrêt du serveur...');
-  await db.close();
-  process.exit(0);
-});
 
 startServer();
 
