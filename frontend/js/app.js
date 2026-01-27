@@ -1,5 +1,5 @@
 // Configuration API
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://localhost:5500/api';
 
 // ===== GESTION DU PANIER =====
 class Cart {

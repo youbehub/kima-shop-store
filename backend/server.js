@@ -8,12 +8,12 @@ require('dotenv').config();
 const db = require('./src/models/database');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5500;
 
 // Middleware de sécurité
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || ['http://localhost:8000', 'http://localhost:3000', 'http://127.0.0.1:8000', 'http://127.0.0.1:3000'],
+  origin: process.env.CORS_ORIGIN || ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true
 }));
 
