@@ -31,19 +31,19 @@ app.use(express.urlencoded({ extended: true }));
 // Servir les fichiers statiques
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Route de santé (avant les autres routes)
+// Route de santé
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Charger les routes après l'initialisation
-(async () => {
+// Initialiser le serveur
+async function startServer() {
   try {
-    // Ouvrir la base de données
+    console.log('Initialisation de la base de données...');
     await db.open();
     console.log('✅ Base de données connectée');
 
-    // Charger les routes
+    console.log('Chargement des routes...');
     const authRoutes = require('./src/routes/auth');
     const productRoutes = require('./src/routes/products');
     const categoryRoutes = require('./src/routes/categories');
@@ -58,6 +58,8 @@ app.get('/api/health', (req, res) => {
     app.use('/api/orders', orderRoutes);
     app.use('/api/admin', adminRoutes);
 
+    console.log('Routes chargées');
+
     // 404
     app.use((req, res) => {
       res.status(404).json({ error: 'Route non trouvée' });
@@ -65,7 +67,7 @@ app.get('/api/health', (req, res) => {
 
     // Middleware d'erreur global
     app.use((error, req, res, next) => {
-      console.error('Erreur:', error);
+      console.error('Erreur serveur:', error);
       res.status(error.status || 500).json({
         error: process.env.NODE_ENV === 'production' 
           ? 'Erreur serveur' 
@@ -74,14 +76,45 @@ app.get('/api/health', (req, res) => {
     });
 
     // Démarrer le serveur
-    app.listen(PORT, '0.0.0.0', () => {
+    const server = app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
+      console.log('En attente des requêtes...');
+      
+      // Garder le processus actif indefiniment
+      setInterval(() => {
+        // Loop infinité pour garder le process vivant
+      }, 3600000); // Chaque heure
     });
 
+    return server;
   } catch (error) {
-    console.error('❌ Erreur:', error);
-    process.exit(1);
+    console.error('❌ Erreur au démarrage:', error);
+    throw error;
   }
-})();
+}
+
+// Gérer les erreurs non gérées
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Promesse non gérée:', reason);
+  // Ne pas quitter
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('Exception non rattrapée:', error);
+  // Ne pas quitter
+});
+
+// Démarrer si c'est le fichier principal
+if (require.main === module) {
+  startServer().catch(error => {
+    console.error('Impossible de démarrer le serveur:', error);
+    // Laisser le processus actif
+  });
+  
+  // Garder le processus vivant
+  setInterval(() => {
+    // Rien, juste pour garder la boucle active
+  }, 1000);
+}
 
 module.exports = app;
