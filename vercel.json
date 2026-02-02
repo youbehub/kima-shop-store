@@ -1,10 +1,12 @@
 {
-  "buildCommand": "echo 'Build complete'",
+  "buildCommand": "npm install",
   "outputDirectory": "frontend",
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/backend/server.js"
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "@vercel/node@3.0.0"
     }
+  },
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/:path*" }
   ]
 }

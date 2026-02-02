@@ -1,5 +1,7 @@
-// Configuration API
-const API_URL = 'http://localhost:5500/api';
+// Configuration API - Utilise /api pour Vercel ou localhost pour le développement local
+const API_URL = window.location.hostname === 'localhost' 
+  ? 'http://localhost:5500/api' 
+  : '/api';
 
 // ===== GESTION DU PANIER =====
 class Cart {
