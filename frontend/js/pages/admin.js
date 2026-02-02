@@ -71,7 +71,7 @@ async function loadProducts() {
     const tbody = document.getElementById('products-tbody');
 
     tbody.innerHTML = data.products.map(product => {
-      const image = product.images?.[0]?.image_url || '/assets/images/placeholder.jpg';
+      const image = product.images?.[0]?.image_url || '/assets/images/placeholder.svg';
       return `
       <tr>
         <td><img src="${image}" style="width:50px; height:50px; object-fit:cover; border-radius:5px;"></td>

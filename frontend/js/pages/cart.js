@@ -9,7 +9,7 @@ function renderCart() {
 
   container.innerHTML = cart.items.map(item => `
     <div style="background: white; padding: 1.5rem; margin-bottom: 1rem; border-radius: 10px; display: grid; grid-template-columns: 100px 1fr auto; gap: 1.5rem; align-items: center;">
-      <img src="${item.product.image_url || '/assets/images/placeholder.jpg'}" alt="${item.product.title}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 8px;">
+      <img src="${item.product.image_url || '/assets/images/placeholder.svg'}" alt="${item.product.title}" style="width: 100%; height: 100px; object-fit: cover; border-radius: 8px;">
       
       <div>
         <h3 style="margin-bottom: 0.5rem;">${item.product.title}</h3>

@@ -180,12 +180,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ===== FONCTIONS DE GESTION DU DOM =====
 function createProductCard(product) {
-  const image = product.images?.[0]?.url || '/assets/images/placeholder.jpg';
+  const image = product.images?.[0]?.url || '/assets/images/placeholder.svg';
   
   return `
     <div class="product-card">
       <div class="product-image">
-        <img src="${image}" alt="${product.title}" onerror="this.src='/assets/images/placeholder.jpg'">
+        <img src="${image}" alt="${product.title}" onerror="this.src='/assets/images/placeholder.svg'">
         ${product.featured ? '<span class="product-badge">Coup de cœur</span>' : ''}
       </div>
       <div class="product-info">

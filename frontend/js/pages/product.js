@@ -21,15 +21,15 @@ async function loadProduct() {
 
     // Galerie d'images
     const images = currentProduct.images || [];
-    const mainImg = images[0]?.url || '/assets/images/placeholder.jpg';
+    const mainImg = images[0]?.url || '/assets/images/placeholder.svg';
     document.getElementById('mainImage').src = mainImg;
-    document.getElementById('mainImage').onerror = function() { this.src = '/assets/images/placeholder.jpg'; };
+    document.getElementById('mainImage').onerror = function() { this.src = '/assets/images/placeholder.svg'; };
 
     // Thumbnails
     const thumbnailsContainer = document.getElementById('thumbnails');
     thumbnailsContainer.innerHTML = images.map((img, idx) => `
       <div class="thumbnail ${idx === 0 ? 'active' : ''}" onclick="changeImage('${img.url}', this)">
-        <img src="${img.url}" alt="" onerror="this.src='/assets/images/placeholder.jpg'">
+        <img src="${img.url}" alt="" onerror="this.src='/assets/images/placeholder.svg'">
       </div>
     `).join('');
 
